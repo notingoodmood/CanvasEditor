@@ -38,17 +38,32 @@
         <div>元素 {{ key }}</div>
         <div>
           <span>水平坐标(x):</span>
-          <input class="input_x" :value="DraggableComponentList[key].x" />
+          <input
+            class="input_x"
+            :value="DraggableComponentList[key].x"
+            @input="onComponentPropertyLineChanges"
+            :name="key"
+            title="x"
+          />
         </div>
         <div>
           <span>竖直坐标(y):</span>
-          <input class="input_y" :value="DraggableComponentList[key].y" />
+          <input
+            class="input_y"
+            :value="DraggableComponentList[key].y"
+            @input="onComponentPropertyLineChanges"
+            :name="key"
+            title="y"
+          />
         </div>
         <div>
           <span>高度(height):</span>
           <input
             class="input_height"
             :value="DraggableComponentList[key].height"
+            @input="onComponentPropertyLineChanges"
+            :name="key"
+            title="height"
           />
         </div>
         <div>
@@ -56,6 +71,9 @@
           <input
             class="input_width"
             :value="DraggableComponentList[key].width"
+            @input="onComponentPropertyLineChanges"
+            :name="key"
+            title="width"
           />
         </div>
       </div>
@@ -119,6 +137,32 @@ export default {
     onResizeCanvas: function () {
       this.CanvasStyle.height = this.CanvasStyle.height / 2;
       this.CanvasStyle.width = this.CanvasStyle.width / 2;
+    },
+    onComponentPropertyLineChanges: function (event) {
+      console.log(event.srcElement.name);
+      let Instance = this.DraggableComponentList[
+        parseInt(event.srcElement.name)
+      ];
+      if (Instance === undefined || isNaN(event.srcElement.name)) return;
+      let val = event.srcElement.value;
+      switch (event.srcElement.title) {
+        case "x": {
+          Instance.x = val;
+          break;
+        }
+        case "y": {
+          Instance.y = val;
+          break;
+        }
+        case "height": {
+          Instance.height = val;
+          break;
+        }
+        case "width": {
+          Instance.width = val;
+          break;
+        }
+      }
     },
   },
 };
